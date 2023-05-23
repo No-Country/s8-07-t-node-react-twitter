@@ -13,30 +13,30 @@ import { IoIosLock } from 'react-icons/io'
 import { getTimeAgo } from '../../utils/formateadorTiemposRelativos'
 
 const Tweet = (props) => {
-  const { id, content, timestamp = 0, imageSrc, likes, retweets, user, comments, like = false } = props
+  const { id, content, timestamp = 0, media, likes, retweets, author, comments, like = false } = props
 
   const formatNum = (num) => (num === 0 ? "" : num);
   return (
         <div key={id} className='h-auto w-full flex flex-row p-3 items-start cursor-pointer border-b dark:border-white/20 border-black/5 bg-white dark:bg-black dark:hover:bg-white/5 hover:bg-black/5 text-[#536471] dark:text-[#e7e9ea]' >
-            <Image src={user.profileImage || 'https://avatars.githubusercontent.com/u/95777615?v=4'} alt={user.name} width={64} height={64} className='h-12 w-12 rounded-full mr-4 hover:opacity-90' />
+            <Image src={author.image} alt={author.name} width={64} height={64} className='h-12 w-12 rounded-full mr-4 hover:opacity-90' />
             <div className="w-full flex flex-col gap-1 text-[#536471] dark:bg-transparent" >
                 <div className='flex flex-row items-start group gap-1 text-lg w-full' >
-                    <h4 className="ml-2 inline-flex items-center align-middle font-bold text-black dark:text-[#e7e9ea] group-hover:underline" >{user.name}
+                    <h4 className="ml-2 inline-flex items-center align-middle font-bold text-black dark:text-[#e7e9ea] group-hover:underline" >{author.name}
                         {
-                            user.private && <IoIosLock className='text-black dark:text-white ml-1' title='Cuenta verificada' />
+                            author.private && <IoIosLock className='text-black dark:text-white ml-1' title='Cuenta verificada' />
                         }
                         {
-                            user.verified && <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' />
+                            author.verified && <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' />
                         }
                     </h4>
-                    <span>{'@' + user.username}</span>
+                    <span>{'@' + author.username}</span>
                     <TimeAgo timestamp={timestamp} />
                 </div>
                 <p className='ml-2 dark:text-white w-[90%]' >{content}</p>
                 {
-                    imageSrc && (
+                    media && (
                         <div className='max-w-fit max-h-fit py-2'>
-                            <img src={imageSrc || "https://pbs.twimg.com/media/FkWOB7-WQAAPLaU?format=jpg&name=small"} className="object-fit rounded-3xl" alt="postImg" />
+                            <img src={media || "https://pbs.twimg.com/media/FkWOB7-WQAAPLaU?format=jpg&name=small"} className="object-fit rounded-3xl" alt="postImg" />
                         </div>
                     )
                 }

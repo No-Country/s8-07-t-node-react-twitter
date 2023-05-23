@@ -4,22 +4,40 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { initialState } from './../../../data/tweets';
 import Head from 'next/head';
+import { getAllTweets } from '../../../lib/tweets';
 function Home() {
     const [isSelected, setIsSelected] = useState('para-ti')
     const [allTweets, setAllTweets] = useState(initialState)
     const [auxAllTweets, setAuxAllTweets] = useState(initialState)
 
     const filterTweets = (payload) => {
-        setAllTweets(auxAllTweets.filter(tweet => payload === "siguiendo" ? tweet.user.username !== 'Cristiano' : tweet.user.username !== ''))
+        setAllTweets(auxAllTweets.filter(tweet => payload === "siguiendo" ? tweet.author.username !== 'Cristiano' : tweet.author.username !== ''))
     }
     const addTweets = (payload) => {
         setAuxAllTweets([payload, ...auxAllTweets])
         setAllTweets([payload, ...auxAllTweets])
     }
 
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const data = await getAllTweets();
+          setAllTweets(prevState => (
+            [...data, ...prevState]
+          ));
+        } catch (error) {
+          console.log(error);
+        }
+      };
+  
+      fetchData();
+    }, []);
     useEffect(() => {
         filterTweets(isSelected)
     }, [isSelected])
+
+console.log(allTweets)
 
     return (
         <>
@@ -27,10 +45,10 @@ function Home() {
                 <title>Inicio / Twitter</title>
             </Head>
             <Header isSelected={isSelected} setIsSelected={setIsSelected} />
-            <Post addTweets={addTweets} />
+            <Post addTweets={setAllTweets} />
             {
                 allTweets.length && allTweets.map((tweet) => (
-                    <Tweet key={tweet.id} {...tweet} />
+                    <Tweet key={tweet._id} {...tweet} />
                 ))
             }
         </>

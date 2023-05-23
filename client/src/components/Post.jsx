@@ -35,32 +35,20 @@ const Post = ({ addTweets }) => {
 
     if (tweetText.length !== 0 || files.length !== 0) {
       const tweet = {
-        id: 'ac82',
         content: tweetText,
         hashtags: ['Tweet'],
-        timestamp: Date.now(),
-        imageSrc: img,
-        likes: [],
-        retweets: [],
-        user: {
-          id: session?.user?.id,
-          verified: true,
-          private: true,
-          name: session?.user?.name,
-          username: session?.user?.name.replace(/\s/g, '').toLocaleLowerCase(),
-          profileImage: session?.user?.image,
-          followers: [],
-          following: [],
-        },
-        comments: [],
+        media: img
       };
-      await createTweet(tweet);
-      addTweets(tweet);
+      const result = await createTweet(tweet);
+      addTweets(prevState => (
+        [result, ...prevState]
+      ));
       setTweetText('');
       setFiles([]);
       setUbicacion('');
     }
   };
+
   return (
     <div className="w-full h-auto border-b border-black/5 dark:border-white/20 dark:bg-black dark:text-[#e7e9ea]">
       <div className="p-4">
