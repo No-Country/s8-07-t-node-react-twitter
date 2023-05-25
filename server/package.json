@@ -30,6 +30,8 @@
 
     "bcryptjs": "^2.4.3",
 
+    "cloudinary": "^1.37.0",
+
     "cors": "^2.8.5",
 
     "dotenv": "^16.0.3",
@@ -53,6 +55,8 @@
     "passport": "^0.6.0",
 
     "passport-jwt": "^4.0.1",
+
+    "sharp": "^0.32.1",
 
     "swagger-ui-express": "^4.6.3",
 
