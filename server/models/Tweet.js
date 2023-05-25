@@ -25,15 +25,15 @@ const tweetSchema = new mongoose.Schema({
     }],
     likes: [{
         user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
         }
-      }],
-      images: [
+    }],
+    images: [
         {
-          type: String,
+        type: String,
         },
-      ],
+    ],
 });
 const Tweet = mongoose.model('Tweet', tweetSchema);
 

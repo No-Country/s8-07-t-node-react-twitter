@@ -1,6 +1,9 @@
 import Tweet from '../models/Tweet.js'
 import path from "path";
 import { fileURLToPath } from 'url';
+import { cloudinaryUpload } from '../helpers/cloudinaryUpload.js';
+import {unlinkSync} from 'fs';
+import sharp from 'sharp';
 
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
@@ -34,15 +37,29 @@ const createTweet = async (req, res) => {
    //const id = req.user.id;
    const { content, hashtags } = req.body;
    const images = req.files;
- 
-   try {
-     const imagePaths = images.map((image) => {
-       const imagePath = `${process.env.API_URL}/public/images/${image.filename}`;
-       return imagePath;
-     });
- 
+
+  try {
+    const imagePaths = await Promise.all(
+      images.map(async (image) => {
+        const { path, filename } = image;
+        try {
+          const optimizedImagePath = `public/images/${filename}.webp`;
+          await sharp(path)
+            .webp({ quality: 75 })
+            .toFile(optimizedImagePath);
+          const imagePath = await cloudinaryUpload(optimizedImagePath);
+          unlinkSync(optimizedImagePath)
+          unlinkSync(path);
+          return imagePath;
+        } catch (error) {
+          unlinkSync(path);
+          throw error;
+        }
+      })
+    );
+     
      const tweet = new Tweet({
-       //author: id,
+       // author: id,
        content,
        hashtags,
        images: imagePaths,
