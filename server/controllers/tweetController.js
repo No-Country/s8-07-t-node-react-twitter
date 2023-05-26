@@ -15,8 +15,8 @@ const createTweet = async (req, res) => {
       return imagePath;
     });
 
-    const tweet = new Tweet({
-      //author: id,
+    let tweet = new Tweet({
+      author: id,
       content,
       hashtags,
       images: imagePaths,
