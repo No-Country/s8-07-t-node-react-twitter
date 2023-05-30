@@ -1,14 +1,15 @@
 import mongoose from 'mongoose';
 
 const tweetSchema = new mongoose.Schema({
+    isRetweet: {
+        type: Boolean,
+        default: false,
+        inmutable: true
+    },
     content: {
         type: String,
     },
-    media: {
-        type: String
-    },
     author: {
-       type: String,
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
@@ -24,20 +25,17 @@ const tweetSchema = new mongoose.Schema({
     hashtags: [{
         type: String
     }],
-  
-      images: [
+    images: [
         {
-          type: String,
+            type: String,
         },
-      ],
+    ],
     likes: [{
-
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
 },
     { timestamps: true });
-
 
 const Tweet = mongoose.model('Tweet', tweetSchema);
 

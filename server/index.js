@@ -46,8 +46,8 @@ dbConnection().catch((error) => {
 
 
 app.use('/api', router);
-app.use('/api', tweetRouter);
-app.use('/api', commentRouter);
+app.use('/api/tweet', tweetRouter);
+app.use('/api/comment', commentRouter);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 
