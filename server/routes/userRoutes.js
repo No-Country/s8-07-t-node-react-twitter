@@ -1,22 +1,27 @@
 import { Router } from 'express';
 import {
-    registerUser,
-    userProfile,
-    confirmUser,
-    authenticateUser,
-    followUser,
-    unfollowUser,
-    getFollowing, 
+    getProfileById,
+    followUserById,
+    unfollowUserById,
+    getFollowing,
+    getMyProfile,
+    updateMyProfile,
+    deleteMyProfile,
+    getAllUsers
 } from '../controllers/userController.js'
+import { sessionMiddleware } from '../middlewares/sessionMiddleware.js';
 
-const router = Router();
+const userRouter = Router();
 
-router.post('/register', registerUser);
-router.get("/profile/:id", userProfile);
-router.get('/confirm/:token', confirmUser);
-router.post('/authenticate', authenticateUser);
-router.post('/follow', followUser);
-router.delete('/unfollow', unfollowUser);
-router.get('/:userId/following', getFollowing);
+userRouter.get('/me', sessionMiddleware, getMyProfile);
+userRouter.put('/me', sessionMiddleware, updateMyProfile);
+userRouter.delete('/me', sessionMiddleware, deleteMyProfile);
 
-export default router;
+userRouter.post('/follow/:id', sessionMiddleware, followUserById);
+userRouter.delete('/unfollow/:id', sessionMiddleware, unfollowUserById);
+
+userRouter.get('/all', getAllUsers)
+userRouter.get('/profile/:id', getProfileById);
+userRouter.get('/:userId/following', getFollowing);
+
+export default userRouter;
