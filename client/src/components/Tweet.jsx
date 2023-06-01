@@ -8,13 +8,13 @@ import { SlOptions } from 'react-icons/sl'
 import { IoStatsChart } from 'react-icons/io5'
 import { IoIosLock } from 'react-icons/io'
 
-import { getTimeAgo } from '../../utils/formateadorTiemposRelativos'
+import { formatDate, getTimeAgo } from '../../utils/formateadorTiemposRelativos'
 import Likes from './Likes'
 import Retweet from './Retweet'
 import Link from 'next/link'
 
 const Tweet = (props) => {
-  const { id, content, timestamp = 0, media, author, comments, createdAt, __v,images} = props
+  const { id, content, timestamp = 0, media, author, comments, createdAt, __v, images, updatedAt } = props
   const formatNum = (num) => (num === 0 ? "" : num);
 
   return (
@@ -36,10 +36,11 @@ const Tweet = (props) => {
                             author?.confirmed && <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' />
                         }
                     </h4>
-                    <span>{'@' + (author?.username || author?.email.split("@")[0])}</span>
-                    {
+                    <span>{'@' + author?.username}</span>
+{/*                     {
                         (timestamp || createdAt) && <TimeAgo timestamp={timestamp || createdAt} />
-                    }
+                    } */}
+                    <span>{formatDate(updatedAt)}</span>
                 </Link>
                 <p className='ml-2 dark:text-white w-[90%]' >{content}</p>
                 {
@@ -100,6 +101,8 @@ const TimeAgo = ({ timestamp, styleds = "" }) => {
       clearInterval(newInterval);
     };
   }, [time]);
+
+  console.log("aca "+time);
 
   return (
         <span className={styleds} >{time}</span>

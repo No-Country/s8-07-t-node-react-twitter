@@ -26,3 +26,8 @@ export const getTimeAgo = timestamp => {
   const [hace, num, unity] = rtf.format(value, unit).split(" ")
   return num + unity.slice(0, 1)
 }
+
+export function formatDate(dateString) {
+  const date = new Date(dateString)
+  return date.toLocaleDateString("es-ES", { day: 'numeric', month: 'short', year: 'numeric' })
+}
