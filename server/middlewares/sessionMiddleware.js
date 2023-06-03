@@ -11,6 +11,10 @@ const sessionMiddleware = async (req, res, next) => {
 
     const token = authHeader.split(' ')[1];
 
+    if(token === undefined) {
+      res.status(401).json({ error: 'Token de sesión inválido' }); // Envía una respuesta de error
+    }
+
     const session = await Session.findOne({ sessionToken: token }); // Busca el token de sesión en la colección
 
     if (session) {
