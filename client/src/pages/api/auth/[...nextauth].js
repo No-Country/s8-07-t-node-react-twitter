@@ -7,6 +7,7 @@ import clientPromise from "lib/mongodb";
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
+  secret: process.env.SECRET,
 
   // Configure one or more authentication providers
   providers: [
@@ -24,7 +25,6 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
-  secret: process.env.SECRET,
 };
 
 export default NextAuth(authOptions);
