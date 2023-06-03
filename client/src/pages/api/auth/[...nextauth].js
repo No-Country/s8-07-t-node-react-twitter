@@ -56,7 +56,7 @@ export const authOptions = {
       }
     },
   },
-  secret: 'random'
+  secret: process.env.SECRET,
 };
 
 export default NextAuth(authOptions);
