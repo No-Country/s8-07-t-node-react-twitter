@@ -30,8 +30,6 @@ export const authOptions = {
   ],
   callbacks: {
     async session({ session, user }) {
-      session.user.name = user.name;
-      session.user._id = user.id;
       const tokenResponse = await fetch(`${API_URL}/api/users/token/${user.id}`);
       const accessToken = await tokenResponse.json();
       session.token = accessToken;
@@ -42,7 +40,7 @@ export const authOptions = {
         },
       });
       const userData = await data.json();
-      session.data = userData;
+      session.user = userData;
       return session;
     },
   },
