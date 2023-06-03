@@ -7,11 +7,14 @@ import {
     getMyProfile,
     updateMyProfile,
     deleteMyProfile,
-    getAllUsers
+    getAllUsers,
+    getSessionToken
 } from '../controllers/userController.js'
 import { sessionMiddleware } from '../middlewares/sessionMiddleware.js';
 
 const userRouter = Router();
+
+userRouter.get('/token/:id', getSessionToken)
 
 userRouter.get('/me', sessionMiddleware, getMyProfile);
 userRouter.put('/me', sessionMiddleware, updateMyProfile);

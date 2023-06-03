@@ -19,6 +19,19 @@ const getProfileById = async (req, res) => {
   }
 };
 
+const getSessionToken = async (req, res) => {
+  try {
+    const { id } = req.params;    
+    if(!id) {
+      res.status(400).json({ error: 'Es necesario el ID del usuario.' })
+    }
+    const userSessionToken = await Session.findOne({ userId: id });
+    res.status(200).json(userSessionToken.sessionToken)
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener el token de sesión.' });
+  }
+}
 
 const getMyProfile = async (req, res) => {
   try {
@@ -187,5 +200,6 @@ export {
   followUserById,
   unfollowUserById,
   getFollowing,
-  getAllUsers
+  getAllUsers,
+  getSessionToken
 };

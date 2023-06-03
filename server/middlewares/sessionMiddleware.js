@@ -2,14 +2,16 @@ import Session from '../models/Session.js';
 
 const sessionMiddleware = async (req, res, next) => {
   try {
-    const sessionToken = req.cookies['next-auth.session-token']; // Se obtiene el token de sesión
+    const authHeader = req.headers.authorization;
 
     // Si el token no se encuentra termina con error
-    if (!sessionToken) {
+    if (!authHeader) {
       return res.status(401).json({ error: 'No se ha iniciado sesión' });
     }
 
-    const session = await Session.findOne({ sessionToken: sessionToken }); // Busca el token de sesión en la colección
+    const token = authHeader.split(' ')[1];
+
+    const session = await Session.findOne({ sessionToken: token }); // Busca el token de sesión en la colección
 
     if (session) {
       // El token de sesión es válido
