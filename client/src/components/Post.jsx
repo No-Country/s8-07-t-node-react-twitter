@@ -34,7 +34,7 @@ const Post = () => {
     if (tweetText.length !== 0 || files.length !== 0) {
       body.append("content", tweetText);
       body.append("hashtags", ["Tweet"]);
-      createTweet(body);
+      createTweet({ body, token: session.token });
       setTweetText("");
       setFiles([]);
       setUbicacion("");

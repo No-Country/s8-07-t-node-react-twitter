@@ -7,7 +7,7 @@ const { default: Link } = require("next/link");
 function QuienSeguir() {
   const { data: session } = useSession();
   const loggedInUserId = session?.user?._id;
-  const userActual = useGetMyProfileQuery(loggedInUserId);
+  const userActual = useGetMyProfileQuery(session?.token);
   const [randomData, setRandomData] = useState([]);
   const { data, isLoading } = useGetAllUsersQuery();
   const [following, setFollowing] = useState([]);
@@ -33,7 +33,7 @@ function QuienSeguir() {
   const [followUser] = useFollowUserMutation();
 
   const onClickFollowUser = async (id) => {
-    const res = await followUser(id, loggedInUserId);
+    const res = await followUser({ userId: id, token: session.token });
     console.log(res);
     if (res.data) {
       setFollowing((prevFollowing) => [...prevFollowing, id]);
@@ -41,7 +41,7 @@ function QuienSeguir() {
   };
 
   const onClickUnFollowUser = async (id) => {
-    const res = await unfollowUser(id, loggedInUserId);
+    const res = await unfollowUser({ userId: id, token: session.token });
     if (res.data) {
       setFollowing((prevFollowing) => prevFollowing.filter((userId) => userId !== id));
     }

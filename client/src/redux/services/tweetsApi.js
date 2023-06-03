@@ -31,22 +31,26 @@ export const tweetsApi = createApi(
       //   query: ({ token}) => `confirm/${token}`,
       // }),
       createTweet: builder.mutation({
-        query: (body) => ({
+        query: ({ body, token }) => ({
           url: "create",
           method: 'POST',
           credentials: 'include',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           formData: true,
           body,
         }),
         invalidatesTags: ["Tweets"],
       }),
       likeTweet: builder.mutation({
-        query: (tweetId) => ({
+        query: ({ tweetId, token }) => ({
           url: `like/${tweetId}`,
           method: 'PUT',
           credentials: 'include',
           headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
         }),
         invalidatesTags: ["Tweets"],

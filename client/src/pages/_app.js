@@ -23,14 +23,12 @@ export default function App({
   }
 
   return (
-    <>
-      <SessionProvider session={session}>
+      <SessionProvider session={session} refetchOnWindowFocus={true}>
         <Providers>
           <Layout>
             <Component {...pageProps} />
           </Layout>
         </Providers>
       </SessionProvider>
-    </>
   );
 }

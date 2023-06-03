@@ -19,44 +19,51 @@ export const usersApi = createApi({
       providesTags: ["Users"],
     }),
     getMyProfile: builder.query({
-      query: () => ({
+      query: (token) => ({
         url: "me",
         method: 'GET',
         credentials: 'include',
         headers: {
-          'content-type': 'application/json'
-        }
+          'content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       }),
     }),
     getUserById: builder.query({
       query: (userId) => `profile/${userId}`,
     }),
     createUser: builder.mutation({
-      query: (body) => ({
+      query: ({ body, token }) => ({
         url: "create",
         method: 'POST',
         credentials: 'include',
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body,
       }),
       invalidatesTags: ["Users"],
     }),
     followUser: builder.mutation({
-      query: (userId) => ({
+      query: ({ userId, token }) => ({
         url: `follow/${userId}`,
         method: 'POST',
         credentials: 'include',
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
       })
     }),
     unFollowUser: builder.mutation({
-      query: (userId) => ({
+      query: ({ userId, token }) => ({
         url: `unfollow/${userId}`,
         method: 'DELETE',
         credentials: 'include',
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
       })
     }),

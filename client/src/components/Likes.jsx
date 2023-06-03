@@ -1,17 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLikeTweetMutation } from '@/redux/services/tweetsApi'
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import { useSession } from "next-auth/react";
 
-const Likes = ({ _id, author, likes }) => {
+const Likes = ({ _id, likes }) => {
   const { data: session } = useSession();
-  const [isLiked, setIsLiked] = useState(session ? likes.find(el => el._id === session.user._id) : false)
+  const loggedInUserId = session?.user?._id;
+  const [isLiked, setIsLiked] = useState(likes.find(like => like._id === loggedInUserId));
   const [likeTweet] = useLikeTweetMutation()
-  const onLikeTweet = async (tweetId, userId) => likeTweet(tweetId, userId)
   const formatNum = (num) => (num === 0 ? "" : num);
 
+  useEffect(() => {
+    setIsLiked(likes.find(like => like._id === loggedInUserId))
+  }, [loggedInUserId, likes])
+
   const onClickLike = () => {
-    onLikeTweet(_id, author._id)
+    likeTweet({ tweetId: _id, token: session.token })
     setIsLiked(!isLiked)
   }
 

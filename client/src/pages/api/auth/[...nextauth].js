@@ -32,14 +32,20 @@ export const authOptions = {
     async session({ session, user }) {
       session.user.name = user.name;
       session.user._id = user.id;
+      const tokenResponse = await fetch(`${API_URL}/api/users/token/${user.id}`);
+      const accessToken = await tokenResponse.json();
+      session.token = accessToken;
       const data = await fetch(`${API_URL}/api/users/me`, {
-        credentials: 'true'
-      }).then((res) => res.json()).catch(error => error)
-      session.data = data;
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const userData = await data.json();
+      session.data = userData;
       return session;
     },
   },
-  secret: process.env.SECRET,
 };
 
 export default NextAuth(authOptions);
