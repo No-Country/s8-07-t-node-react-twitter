@@ -101,7 +101,7 @@ const TimeAgo = ({ timestamp, styleds = "" }) => {
   }, [time]);
 
   return (
-        <span className={styleds} >{time}</span>
+        <span className={styleds}>{` · ${time}`}</span>
   )
 }
 

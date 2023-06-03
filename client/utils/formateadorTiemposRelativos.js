@@ -1,28 +1,30 @@
-const DATE_UNITS = {
-  day: 86400,
-  hour: 3600,
-  minute: 60,
-  second: 1
-}
+const TIME_UNITS = [
+  { unit: 'día', seconds: 86400 },
+  { unit: 'h', seconds: 3600 },
+  { unit: 'min', seconds: 60 },
+  { unit: 's', seconds: 1 }
+];
 
-const getSecondsDiff = (timestamp) => {
-  const _TIME = new Date(timestamp)
-  return (Date.now() - _TIME.getTime()) / 1000
-}
-const getUnitAndValueDate = (secondsElapsed) => {
-  for (const [unit, secondsInUnit] of Object.entries(DATE_UNITS)) {
-    if (secondsElapsed >= secondsInUnit || unit === "second") {
-      const value = Math.floor(secondsElapsed / secondsInUnit) * -1
-      return { value, unit }
+export const getTimeAgo = (timestamp) => {
+  const date = new Date(timestamp);
+  const now = new Date();
+
+  const timeDiff = now.getTime() - date.getTime();
+
+  if (timeDiff < 48 * 60 * 60 * 1000) {
+    const secondsElapsed = Math.floor(timeDiff / 1000);
+
+    if (secondsElapsed === 0) {
+      return '1s'
     }
+
+    for (const { unit, seconds } of TIME_UNITS) {
+      if (secondsElapsed >= seconds || unit === 'seg') {
+        const value = Math.floor(secondsElapsed / seconds);
+        return `${value}${unit}`;
+      }
+    }
+  } else {
+    return date.toLocaleString('es-ES', { day: 'numeric', month: 'short' }) + ".";
   }
-}
-
-export const getTimeAgo = timestamp => {
-  const rtf = new Intl.RelativeTimeFormat()
-
-  const secondsElapsed = getSecondsDiff(timestamp)
-  const { value, unit } = getUnitAndValueDate(secondsElapsed)
-  const [hace, num, unity] = rtf.format(value, unit).split(" ")
-  return num + unity.slice(0, 1)
-}
+};
