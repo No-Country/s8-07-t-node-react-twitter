@@ -5,9 +5,9 @@ import FacebookProvider from "next-auth/providers/facebook";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "lib/mongodb";
 
-export const authOptions = {
-  adapter: MongoDBAdapter(clientPromise),
+export default NextAuth({
   secret: process.env.SECRET,
+  adapter: MongoDBAdapter(clientPromise),
 
   // Configure one or more authentication providers
   providers: [
@@ -25,6 +25,4 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
-};
-
-export default NextAuth(authOptions);
+});
