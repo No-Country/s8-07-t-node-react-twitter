@@ -24,11 +24,6 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
-  callbacks: {
-    async session({ session, user }) {
-      return session;
-    },
-  },
   secret: process.env.SECRET,
 };
 
