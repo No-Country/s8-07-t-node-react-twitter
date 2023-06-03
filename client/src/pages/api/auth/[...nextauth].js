@@ -56,6 +56,7 @@ export const authOptions = {
       }
     },
   },
+  secret: 'random'
 };
 
 export default NextAuth(authOptions);
